@@ -13,6 +13,7 @@
         </span>
     </div>
     <ul class="list-group">
+        <div v-if="flag">
         <li :key="index" class="list-group-item" v-for="(todo, index) in todos"> {{todo.name}}
 	        <div class="btn-group pull-right" 
 		    style="font-size: 12px; line-height: 1;">
@@ -29,6 +30,10 @@
 		    </ul>
 	        </div>
         </li>
+        </div>
+        <div v-else-if="!flag" style="text-align:center; margin-top:50px;">
+            <h3>등록된 정보가 없습니다</h3>
+        </div>
     </ul>
 </div>
 </template>
@@ -38,6 +43,7 @@ export default {
   name: 'TodoPage',
   data () {
     return {
+        flag:false,
         name: null,
         todos: []
     }
@@ -45,11 +51,20 @@ export default {
   methods: {
       deleteTodo(i) {
           this.todos.splice(i,1);
+          if (this.todos.length == 0) {
+              this.flag = false;
+          }
       },
       createTodo(name){
           if(name != null) {
               this.todos.push({name:name});
-              this.name = null
+              this.name = null;
+              if (this.flag == false) {
+              this.flag = true;
+            }
+          }
+          else {
+              alert("입력하세요");
           }
       }
   }
